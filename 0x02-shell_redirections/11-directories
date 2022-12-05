@@ -1,2 +1,2 @@
 #!/bin/basiih
-find . -type f -print | wc -l
+find . -type d ! -path . | wc -l

@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-#Bash script that displays a list of currently running processes.
-$"ps" "faux" | grep "bash"
+# Displays lines containing the word bash.
+
+ps auxf |grep  bash

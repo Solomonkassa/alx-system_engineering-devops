@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
-# Kills the process of 7-highlander.
+# kills the infinity and beyond program using sigkill signal
 
-pkill -SIGKILL -f "7-highlander"
+# Terminate the infinate process
+pkill -9 "bash ./7-highlander" -f

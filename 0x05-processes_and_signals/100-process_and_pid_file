@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+#script taht creates a file, displays to infinity and beyond indefinitely
+#diplays I hate the kill command when receiving a SIGTERM signal
+#Deletes the file created and terminaes itself  when receiving a SIGQUIT or
+#SIGTERM signal
+
+i="1"
+sudo touch /var/run/holbertonscript.pid
+sudo bash -c 'echo $$ > /var/run/holbertonscript.pid'
+hate()
+{
+echo "I hate the kill command"
+sudo rm /var/run/holbertonscript.pid
+}
+no_love()
+{
+echo "Y U no love me?!"
+}
+trap 'hate; exit' SIGTERM
+trap 'no_love; exit' SIGINT
+trap 'sudo rm /var/run/holbertonscript.pid; exit' SIGQUIT
+while [ $i -eq 1 ]
+do
+echo "To infinity and beyond"
+sleep 2
+done

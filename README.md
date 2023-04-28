@@ -10,3 +10,4 @@ This repository contains a collection of projects completed during studies of Sy
 | 0x03-shell_variable_expansions | Learning about various shell variables, including aliases, local and global variables, and reserved variables such as PATH, HOME, and PS1. Special parameters such as `$?` and the use of single and double quotes were also covered. |
 
 This table provides a more organized view of the information, making it easier to read and understand the content.
+

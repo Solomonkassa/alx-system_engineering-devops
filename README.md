@@ -19,17 +19,17 @@ Once you have cloned the repository, navigate to the appropriate directory and e
 
 Here is a list of the scripts in this repository and what they do:
 
-   - [0x00-shell_basics](https://github.com/Solomonkassa/alx-system_engineering-devops/0x00-shell_basics): Contains basic shell scripts for navigating the file system, manipulating files, and printing output to the terminal.
+   - [0x00-shell_basics](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x00-shell_basics): Contains basic shell scripts for navigating the file system, manipulating files, and printing output to the terminal.
 
-   - [0x01-shell_permissions](https://github.com/Solomonkassa/alx-system_engineering-devops/0x01-shell_permissions): Contains shell scripts for working with file permissions, ownership, and executing commands with elevated privileges.
+   - [0x01-shell_permissions](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x01-shell_permissions): Contains shell scripts for working with file permissions, ownership, and executing commands with elevated privileges.
 
-   - [0x02-shell_redirections](https://github.com/Solomonkassa/alx-system_engineering-devops/0x02-shell_redirections): Contains shell scripts for redirecting input and output to files and other programs.
+   - [0x02-shell_redirections](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x02-shell_redirections): Contains shell scripts for redirecting input and output to files and other programs.
 
-   - [0x03-shell_variables_expansions](https://github.com/Solomonkassa/alx-system_engineering-devops/0x03-shell_variables_expansions): Contains shell scripts for working with environment variables, shell expansions, and manipulating strings.
+   - [0x03-shell_variables_expansions](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x03-shell_variables_expansions): Contains shell scripts for working with environment variables, shell expansions, and manipulating strings.
 
-   - [0x04-loops_conditions_and_parsing](https://github.com/Solomonkassa/alx-system_engineering-devops/0x04-loops_conditions_and_parsing): Contains shell scripts for working with loops, conditionals, and parsing text.
+   - [0x04-loops_conditions_and_parsing](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x04-loops_conditions_and_parsing): Contains shell scripts for working with loops, conditionals, and parsing text.
 
-   - [0x05-processes_and_signals](https://github.com/Solomonkassa/alx-system_engineering-devops/0x05-processes_and_signals): Contains shell scripts for working with processes and signals.
+   - [0x05-processes_and_signals](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x05-processes_and_signals): Contains shell scripts for working with processes and signals.
 
    - 0x06-regular_expressions: Contains shell scripts for working with regular expressions.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#displays "Holberton School" 10 times using while loop
+#displays "School" 10 times using while loop
 
 count=0
 

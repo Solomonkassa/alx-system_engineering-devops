@@ -35,7 +35,7 @@ Here is a list of the scripts in this repository and what they do:
 
    - [0x07-networking_basics](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x07-networking_basics): Contains shell scripts for working with networking tools and protocols.
 
-   - 0x08-networking_basics_2: Contains shell scripts for working with networking tools and protocols.
+   - [0x08-networking_basics_2](alx-system_engineering-devops/0x08-networking_basics_2/): Contains shell scripts for working with networking tools and protocols.
 
    - 0x09-web_infrastructure_design: Contains scripts that cover different aspects of web infrastructure design.
 

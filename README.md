@@ -31,7 +31,7 @@ Here is a list of the scripts in this repository and what they do:
 
    - [0x05-processes_and_signals](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x05-processes_and_signals): Contains shell scripts for working with processes and signals.
 
-   - 0x06-regular_expressions: Contains shell scripts for working with regular expressions.
+   - [0x06-regular_expressions](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x06-regular_expressions): Contains shell scripts for working with regular expressions.
 
    - 0x07-networking_basics: Contains shell scripts for working with networking tools and protocols.
 

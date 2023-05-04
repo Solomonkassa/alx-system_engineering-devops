@@ -33,7 +33,7 @@ Here is a list of the scripts in this repository and what they do:
 
    - [0x06-regular_expressions](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x06-regular_expressions): Contains shell scripts for working with regular expressions.
 
-   - 0x07-networking_basics: Contains shell scripts for working with networking tools and protocols.
+   - [0x07-networking_basics](https://github.com/Solomonkassa/alx-system_engineering-devops/tree/master/0x07-networking_basics): Contains shell scripts for working with networking tools and protocols.
 
    - 0x08-networking_basics_2: Contains shell scripts for working with networking tools and protocols.
 

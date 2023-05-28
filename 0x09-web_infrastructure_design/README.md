@@ -50,7 +50,7 @@
 </ul>
 </detaiL>
 
-## Contributors
+# Contributors
 This project was created by:
 
 - [Solomon Kassa](https://github.com/Solomonkassa)

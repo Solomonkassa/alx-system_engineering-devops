@@ -37,7 +37,7 @@ Here is a list of the scripts in this repository and what they do:
 
    - [0x08-networking_basics_2](alx-system_engineering-devops/0x08-networking_basics_2/): Contains shell scripts for working with networking tools and protocols.
 
-   - 0x09-web_infrastructure_design: Contains scripts that cover different aspects of web infrastructure design.
+    0x09-web_infrastructure_design: Contains scripts that cover different aspects of web infrastructure design.
 
    - 0x0A-configuration_management: Contains scripts for working with configuration management tools like Puppet and Ansible.
 

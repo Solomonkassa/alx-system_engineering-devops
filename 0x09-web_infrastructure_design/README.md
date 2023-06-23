@@ -48,4 +48,10 @@
   </ul>
   </li>
 </ul>
-</details>
+</detaiL>
+
+# Contributors
+This project was created by:
+
+- [Solomon Kassa](https://github.com/Solomonkassa)
+

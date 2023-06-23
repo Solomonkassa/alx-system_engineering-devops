@@ -156,7 +156,7 @@ root@d391259bf577:/#
 
 ### 2\. Execute a command
 
-mandatory
+mandatory.
 
 Using Puppet, create a manifest that kills a process named `killmenow`.
 

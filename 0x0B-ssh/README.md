@@ -1,32 +1,52 @@
-SSH - guide:
-In this context SSH enables you establish remote communication between systems[client and remote host/server]. You can spawn a remote shell in this using SSH protocol.
+# SSH - guide:
 
-Prerequisites
-all your Bash script files must be executable - i.e. do: $ chmod +x filename
-the first line of all your Bash scripts should be exactly #!/usr/bin/env bash
-environment:
-Ubuntu 20.04 LTS
-Bash shell
-Puppet
-Steps:
-ask for a server in the intranet -> select [action] from the [Actions] drop-down menu.
+In this context `SSH` enables you establish remote communication between systems[client and remote host/server]. You can spawn a remote shell in this using `SSH` protocol.
 
-task 0 - Use a private key:
-This is a demo on how to connect to your server; no restrictions. Follow the instructions in the task. Ie you can connect to a remote host like this:
+## Prerequisites  
+
+- all your Bash script files must be executable - i.e. do: `$ chmod +x filename`
+- the first line of all your Bash scripts should be exactly `#!/usr/bin/env bash`  
+- environment:  
+> - Ubuntu 20.04 LTS  
+> - Bash shell  
+> - Puppet   
+
+## Steps:  
+1. *ask for a server in the intranet* -> select [action] from the [Actions] drop-down menu.
+
+<div>
+    <img src="./ssh-png.png" height="100"/>
+</div>
+
+2. **`task 0` - Use a private key**:  
+This is a demo on how to connect to your server; no restrictions. Follow the instructions in the task.
+Ie you can connect to a remote host like this:  
+```bash
 # -i option is for specifying the identity file:
 ssh -i path/to/file username@server-ip-address
-task 1 - Create an SSH key pair:
+```
+
+3. **`task 1` - Create an SSH key pair**:  
 This is how you create an SSH key-pair in command-line:
+```bash
 ssh-keygen -t type -b bit-length -C "some-identity-eg-machine-or-email"
-This would take you through a wizard to specify path to file(path and its name - uses default type if you press enter) and then give a passphrase/blank to use none.
+```
+
+This would take you through a wizard to specify path to file(path and its name - uses default type if you press enter) and then give a passphrase/blank to use none.  
 So adapt this to be done using a bash script and specify the passphrase and the filename by passing in options for each respectively.
 
-task 2 - Client configuration file:
-This, and subsequent tasks, is the focus of this guide. Task specs:
-Your machine has an SSH configuration file for the local SSH client, let’s configure it to our needs so that you can connect to a server without typing a password. Share your SSH client configuration in your answer file.
-Requirements:
-Your SSH client configuration must be configured to use the private key ~/.ssh/school Your SSH client configuration must be configured to refuse to authenticate using a password Example:
 
+4. **`task 2` - Client configuration file**:  
+This, and subsequent tasks, is the focus of this guide. 
+Task specs:  
+Your machine has an SSH configuration file for the local SSH client, let’s configure it to our needs so that you can connect to a server without typing a password. Share your SSH client configuration in your answer file.
+
+Requirements:  
+    Your SSH client configuration must be configured to use the private key ~/.ssh/school
+    Your SSH client configuration must be configured to refuse to authenticate using a password
+    Example:
+
+```bash
 sylvain@ubuntu$ ssh -v ubuntu@98.98.98.98
 OpenSSH_6.6.1, OpenSSL 1.0.1f 6 Jan 2014
 debug1: Reading configuration data /etc/ssh/ssh_config
@@ -68,54 +88,74 @@ debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
 debug1: Sending environment.
 debug1: Sending env LANG = en_US.UTF-8
 ubuntu@magic-server:~$
-In the example above, we can see that ssh tries to authenticate using school and does not try to authenticate using a password. You can replace 98.98.98.98 by the IP of your server for testing purposes.
+```
 
-Well, you have to remember you generated a SSH key-pair in the project: Bash - Loops, conditions and parsing. This was a key-pair you generated in task 0 of that project and you saved it to your intranet profile. It was used to setup your current SSH - Project to enable remote connection to your server.
+In the example above, we can see that `ssh` tries to authenticate using school and does not try to authenticate using a password. You can replace 98.98.98.98 by the IP of your server for testing purposes.  
 
-If you didn't, then sorry. Maybe you can do now and update in that project section though I think the public key is used to setup the current ssh project. So I'm not sure updating will help, unless the setup is done automatically, as in if there is a detetction mechanism that detects file changes in GitHub and adds the key from your GitHub to configure the new project dynamically.
+> Well, you have to remember you generated a SSH key-pair in the project: `Bash - Loops, conditions and parsing`. This was a key-pair you generated in `task 0` of that project and you saved it to your intranet profile. It was used to setup your current SSH - Project to enable remote connection to your server.
+
+> If you didn't, then sorry. Maybe you can do now and update in that project section though I think the public key is used to setup the current ssh project. So I'm not sure updating will help, unless the setup is done automatically, as in if there is a detetction mechanism that detects file changes in GitHub and adds the key from your GitHub to configure the new project dynamically.
 
 Review these requirements again:
 
+```bash 
     Your SSH client configuration must be configured to use the private key ~/.ssh/school  
     Your SSH client configuration must be configured to refuse to authenticate using a password  
-Note - focus on the first one:
-Your key-pair generated in the project Bash - Loops, conditions and parsing, should exist in your local machine/sandbox/vm etc. If the key-pair you generated in the previous projcet is named school, and the path is ~/.ssh/school, then you're good to go.
-If not you might have to rename it to school ie rename public key, rename private key.
+```
 
-mv current-name school
-mv current-name.pub school.pub
+> **Note** - focus on the first one:  
+> Your key-pair generated in the project `Bash - Loops, conditions and parsing`, should exist in your local machine/sandbox/vm etc.
+> If the key-pair you generated in the previous projcet is named `school`, and the path is `~/.ssh/school`, then you're good to go.  
+> If not you might have to rename it to `school` ie rename public key, rename private key.  
+>> `mv current-name school`  
+>> `mv current-name.pub school.pub`  
 
-move both public key and private key to ~/.ssh/ directory:
+> move both public key and private key to ~/.ssh/ directory:  
+>> `mv school.pub school ~/.ssh/`  
 
-mv school.pub school ~/.ssh/
 
-Configure Local OpenSSH Client:
-You should have a file ~/.ssh/config :
+### Configure Local OpenSSH Client:  
 
+You should have a file `~/.ssh/config`  :
+```bash
 $ ls -a ~/.ssh/
+```
+
 If not create it:
-
+```bash
 vim ~/.ssh/config
-Add the content below to whatever is inside if exists:
+```
 
+Add the content below to whatever is inside if exists:
+```bash
 Host your-server-ip
     IdentityFile ~/.ssh/school
     PreferredAuthentications publickey
     PasswordAuthentication no
-Review this line in the console session above: sylvain@ubuntu$ ssh -v ubuntu@98.98.98.98
+```
 
-Connect to your server:
+Review this line in the console session above: `sylvain@ubuntu$ ssh -v ubuntu@98.98.98.98`  
+
+`Connect to your server`:  
 If you asked for a server in step 1. You have an IP
-
+```bash
 ssh -v ubuntu@your-server-ip
-If you get a permission denied error, set the file permission of the ~/.ssh/school file to read-only for yourself/user:
+```
 
+If you get a `permission denied` error, set the file permission of the `~/.ssh/school` file to read-only for yourself/user:
+
+```bash
 chmod 400 ~/.ssh/school
-Connect now:
+```
 
+Connect now: 
+```bash
 ssh -v ubuntu@your-server-ip
+```
+
 See shell session below for reference:
 
+```bash
 root@HP:/alx-SE/alx-system_engineering-devops/0x0B-ssh# ssh -v ubuntu@54.196.27.23
 OpenSSH_8.2p1 Ubuntu-4ubuntu0.7, OpenSSL 1.1.1f  31 Mar 2020
 debug1: Reading configuration data /root/.ssh/config
@@ -202,19 +242,28 @@ ubuntu@194126-web-01:~$ cat ~/.ssh/authorized_keys
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCKAYwA7g+vnJ5XBV8lamCQo5jTaSJaJS6sMFYcaGhNWucItZjcKMdGj7lkleEFV2x00b9643oac0SeOXljTa3V4In7JlHV0Toot7SI7dZjE9Dgiq/+xRJmBZXs1MCf8QK5XS8rS+2i9JlXD52OZuX6iAqPo7ELASSf6PGyZotj+EdXSvq8bYfUoPW9HYDgfaxCpSgtnQ7tdTuZWjdCE+sBLpC+2Rl7s1LfNQWTQ5uPtXyxwUhrEWrwIClGMp5Wfl0N7DuX+3ZP6igaCDMtjgRCnqtvB27h0gQPHlV2zycf0bjGlHL7USSg/hNMm0EKdkPjcDEQAAkLRSF4OK+uQfU3 alx_applicant_server
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDS4g/rZhE9YRbJjgbZq46DZ7W2ZHD5auZn+Kv5tYaDsuSgL+7H4wYt3+9GHdOMOzXSTniDNs6A6sdAdH7vlpsXbDyZAuq+4EszLXafETcexx0HKocaKx3t77rFTmlqOfX6UFfT7rQxgyfZOG/mLWyxbZktSxG0htIBxeAW5X/nsj9n7YL/0MBsdZb6vKCZEJd6VU9mchWhcrklPvPvNH6TfvV/IJNAz0fnjP15U0mKENLmnSOnzrNq3vTYZ/SynDAjYz4ox1khT1AtpCbsZaJBY800JNvBVEEtWU0ymfEcSkKbPvdn5EU207KCEx+jwDDNsnD5zE2d6KH9UBIBHBeGhaZiuorbfbc5Uy/09Hhc3mUmq+jWCU3FIJJ7j44gqiWmp4AzfiC47w+ozks4Ze59+3UIl+7ULHZN5QteC6kupJL+nv6eL1WlimivvIQMKd3zIMireA4MU5IHe7Cf3lBUca4oIEx0iLE5qy65Sr46hUp62N7ulm2K6V8DfiTXevE= root@HP
 ubuntu@194126-web-01:~$ nano ~/.ssh/authorized_keys
-See below for contrast if the console text-above is jumbled up and some detail is not easily visible:
+```
 
-sever-shell
+See below for contrast if the console text-above is jumbled up and some detail is not easily visible: 
 
+![sever-shell](./server-shell.png)
 
-Step n: task 3
-While Still connected to your remote shell.(Review the last part of the console session above)
-Add the string(provided) to the authorized_keys file.
+<br/>
 
+5. **Step n: task 3**  
+
+While Still connected to your remote shell.(Review the last part of the console session above)  
+Add the string(provided) to the `authorized_keys` file.  
+
+```bash
 nano ~/.ssh/authorized_keys
-The SSH public key given in your intranet task 3 looks like this:
+```
 
+The SSH public key given in your intranet task 3 looks like this:
+```bash
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNdtrNGtTXe5Tp1EJQop8mOSAuRGLjJ6DW4PqX4wId/Kawz35ESampIqHSOTJmbQ8UlxdJuk0gAXKk3Ncle4safGYqM/VeDK3LN5iAJxf4kcaxNtS3eVxWBE5iF3FbIjOqwxw5Lf5sRa5yXxA8HfWidhbIG5TqKL922hPgsCGABIrXRlfZYeC0FEuPWdr6smOElSVvIXthRWp9cr685KdCI+COxlj1RdVsvIo+zunmLACF9PYdjB2s96Fn0ocD3c5SGLvDOFCyvDojSAOyE70ebIElnskKsDTGwfT4P6jh9OBzTyQEIS2jOaE5RQq4IB4DsMhvbjDSQrP0MdCLgwkN
+```
+
 This is the end of the guide.
 
-For task 4; follow the instructions and based on task requirements and your Puppet knowledge.
+For task 4; follow the instructions and based on task requirements and your **Puppet** knowledge.

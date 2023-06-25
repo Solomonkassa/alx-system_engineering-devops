@@ -1,179 +1,32 @@
-0x0B. SSH
-=========
+SSH - guide:
+In this context SSH enables you establish remote communication between systems[client and remote host/server]. You can spawn a remote shell in this using SSH protocol.
 
--   By Sylvain Kalache
--   Weight: 1
+Prerequisites
+all your Bash script files must be executable - i.e. do: $ chmod +x filename
+the first line of all your Bash scripts should be exactly #!/usr/bin/env bash
+environment:
+Ubuntu 20.04 LTS
+Bash shell
+Puppet
+Steps:
+ask for a server in the intranet -> select [action] from the [Actions] drop-down menu.
 
-Background Context
-------------------
+task 0 - Use a private key:
+This is a demo on how to connect to your server; no restrictions. Follow the instructions in the task. Ie you can connect to a remote host like this:
+# -i option is for specifying the identity file:
+ssh -i path/to/file username@server-ip-address
+task 1 - Create an SSH key pair:
+This is how you create an SSH key-pair in command-line:
+ssh-keygen -t type -b bit-length -C "some-identity-eg-machine-or-email"
+This would take you through a wizard to specify path to file(path and its name - uses default type if you press enter) and then give a passphrase/blank to use none.
+So adapt this to be done using a bash script and specify the passphrase and the filename by passing in options for each respectively.
 
-![](https://s3.amazonaws.com/intranet-projects-files/holbertonschool-sysadmin_devops/244/zPVRKhPsUP5lK.gif)
-
-Along with this project, you have been attributed an Ubuntu server, living in a datacenter far far away. Like level 2 of the application process, you will connect using `ssh`. But contrary to level 2, you will not connect using a password but an RSA key. We've configured your server with the public key you created in the first task of [a previous project](https://alx-intranet.hbtn.io/rltoken/UQIQV4HJGvBv0qrHhlDFaQ "a previous project") shared in your [intranet profile](https://alx-intranet.hbtn.io/rltoken/8ZlNV0J-sa-dijhmhJolOg "intranet profile").
-
-You can access your server information in the [my servers](https://alx-intranet.hbtn.io/rltoken/e2_s_pXwBVuYbhrvoesfrg "my servers") section of the intranet, each line with contains the IP and username you should use to connect via `ssh`.
-
-**Note:** Your server is configured with an Ubuntu 20.04 LTS environment.
-
-Resources
----------
-
-**Read or watch**:
-
--   [What is a (physical) server - text](https://alx-intranet.hbtn.io/rltoken/dkgW9lKiBRiUZHfq0MDJuw "What is a (physical) server - text")
--   [What is a (physical) server - video](https://alx-intranet.hbtn.io/rltoken/AxFcTdcXUCsrVp01X_EbFA "What is a (physical) server - video")
--   [SSH essentials](https://alx-intranet.hbtn.io/rltoken/ux0eM1QU9reNyG45b0erAQ "SSH essentials")
--   [SSH Config File](https://alx-intranet.hbtn.io/rltoken/Rc9FpSy4ZaQWPlcWLinbNw "SSH Config File")
--   [Public Key Authentication for SSH](https://alx-intranet.hbtn.io/rltoken/tOcxk5mtkedBM0WxyDZxTw "Public Key Authentication for SSH")
--   [How Secure Shell Works](https://alx-intranet.hbtn.io/rltoken/j0atjRrVfZ6F810qmPfAzA "How Secure Shell Works")
--   [SSH Crash Course](https://alx-intranet.hbtn.io/rltoken/FKqd8CjxExmpWGu6xGavKw "SSH Crash Course") (Long, but highly informative. Watch this if configuring SSH is still confusing. It may be helpful to watch at x1.25 speed or above.)
-
-**For reference:**
-
--   [Understanding the SSH Encryption and Connection Process](https://alx-intranet.hbtn.io/rltoken/JB-Vi4dR3q6nF4MBhsn8kQ "Understanding the SSH Encryption and Connection Process")
--   [Secure Shell Wiki](https://alx-intranet.hbtn.io/rltoken/SpiYWE79Yfr_vWDg42dzCw "Secure Shell Wiki")
--   [IETF RFC 4251 (Description of the SSH Protocol)](https://alx-intranet.hbtn.io/rltoken/f2O0OQq9tch2MYeNAzkg5w "IETF RFC 4251 (Description of the SSH Protocol)")
--   [Internet Engineering Task Force](https://alx-intranet.hbtn.io/rltoken/gd1W1UvB0KeJVWwM8BLvhA "Internet Engineering Task Force")
--   [Request for Comments](https://alx-intranet.hbtn.io/rltoken/jb-IrnQnUh-PsEDlbAU0Kw "Request for Comments")
-
-**man or help**:
-
--   `ssh`
--   `ssh-keygen`
--   `env`
-
-Learning Objectives
--------------------
-
-At the end of this project, you are expected to be able to [explain to anyone](https://alx-intranet.hbtn.io/rltoken/0Wgw_i87NIVCfUcRzdZgkg "explain to anyone"), **without the help of Google**:
-
-### General
-
--   What is a server
--   Where servers usually live
--   What is SSH
--   How to create an SSH RSA key pair
--   How to connect to a remote host using an SSH RSA key pair
--   The advantage of using `#!/usr/bin/env bash` instead of `/bin/bash`
-
-Requirements
-------------
-
-### General
-
--   Allowed editors: `vi`, `vim`, `emacs`
--   All your files will be interpreted on Ubuntu 20.04 LTS
--   All your files should end with a new line
--   A `README.md` file, at the root of the folder of the project, is mandatory
--   All your Bash script files must be executable
--   The first line of all your Bash scripts should be exactly `#!/usr/bin/env bash`
--   The second line of all your Bash scripts should be a comment explaining what is the script doing
-
-Your servers
-------------
-
-| Name | Username | IP | State |  |
-| --- | --- | --- | --- | --- |
-| 1733-web-01 | `ubuntu` | `34.139.191.175` | running |
-
-Actions Toggle Dropdown
-
- |
-
-Tasks
------
-
-### 0\. Use a private key
-
-mandatory
-
-Write a Bash script that uses `ssh` to connect to your server using the private key `~/.ssh/school` with the user `ubuntu`.
-
+task 2 - Client configuration file:
+This, and subsequent tasks, is the focus of this guide. Task specs:
+Your machine has an SSH configuration file for the local SSH client, let’s configure it to our needs so that you can connect to a server without typing a password. Share your SSH client configuration in your answer file.
 Requirements:
+Your SSH client configuration must be configured to use the private key ~/.ssh/school Your SSH client configuration must be configured to refuse to authenticate using a password Example:
 
--   Only use `ssh` single-character flags
--   You cannot use `-l`
--   You do not need to handle the case of a private key protected by a passphrase
-
-```
-sylvain@ubuntu$ ./0-use_a_private_key
-ubuntu@server01:~$ exit
-Connection to 8.8.8.8 closed.
-sylvain@ubuntu$
-
-```
-
-**Repo:**
-
--   GitHub repository: `alx-system_engineering-devops`
--   Directory: `0x0B-ssh`
--   File: `0-use_a_private_key`
-
- Done? Help
-
-### 1\. Create an SSH key pair
-
-mandatory
-
-Write a Bash script that creates an RSA key pair.
-
-Requirements:
-
--   Name of the created private key must be `school`
--   Number of bits in the created key to be created 4096
--   The created key must be protected by the passphrase `betty`
-
-Example:
-
-```
-sylvain@ubuntu$ ls
-1-create_ssh_key_pair
-sylvain@ubuntu$ ./1-create_ssh_key_pair
-Generating public/private rsa key pair.
-Your identification has been saved in school.
-Your public key has been saved in school.pub.
-The key fingerprint is:
-5d:a8:c1:f5:98:b6:e5:c0:9b:ee:02:c4:d4:01:f3:ba vagrant@ubuntu
-The key's randomart image is:
-+--[ RSA 4096]----+
-|      oo...      |
-|      .+.o =     |
-|     o  + B +    |
-|      o. = O     |
-|     .. S = .    |
-|      .. .       |
-|      E.  .      |
-|        ..       |
-|         ..      |
-+-----------------+
-sylvain@ubuntu$ ls
-1-create_ssh_key_pair school  school.pub
-sylvain@ubuntu$
-
-```
-
-**Repo:**
-
--   GitHub repository: `alx-system_engineering-devops`
--   Directory: `0x0B-ssh`
--   File: `1-create_ssh_key_pair`
-
- Done? Help
-
-### 2\. Client configuration file
-
-mandatory
-
-Your machine has an SSH configuration file for the local SSH client, let's configure it to our needs so that you can connect to a server without typing a password. Share your SSH client configuration in your answer file.
-
-Requirements:
-
--   Your SSH client configuration must be configured to use the private key `~/.ssh/school`
--   Your SSH client configuration must be configured to refuse to authenticate using a password
-
-Example:
-
-```
 sylvain@ubuntu$ ssh -v ubuntu@98.98.98.98
 OpenSSH_6.6.1, OpenSSL 1.0.1f 6 Jan 2014
 debug1: Reading configuration data /etc/ssh/ssh_config
@@ -215,64 +68,153 @@ debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
 debug1: Sending environment.
 debug1: Sending env LANG = en_US.UTF-8
 ubuntu@magic-server:~$
+In the example above, we can see that ssh tries to authenticate using school and does not try to authenticate using a password. You can replace 98.98.98.98 by the IP of your server for testing purposes.
 
-```
+Well, you have to remember you generated a SSH key-pair in the project: Bash - Loops, conditions and parsing. This was a key-pair you generated in task 0 of that project and you saved it to your intranet profile. It was used to setup your current SSH - Project to enable remote connection to your server.
 
-In the example above, we can see that `ssh` tries to authenticate using `school` and does not try to authenticate using a password. You can replace `98.98.98.98` by the IP of your server for testing purposes.
+If you didn't, then sorry. Maybe you can do now and update in that project section though I think the public key is used to setup the current ssh project. So I'm not sure updating will help, unless the setup is done automatically, as in if there is a detetction mechanism that detects file changes in GitHub and adds the key from your GitHub to configure the new project dynamically.
 
-**Repo:**
+Review these requirements again:
 
--   GitHub repository: `alx-system_engineering-devops`
--   Directory: `0x0B-ssh`
--   File: `2-ssh_config`
+    Your SSH client configuration must be configured to use the private key ~/.ssh/school  
+    Your SSH client configuration must be configured to refuse to authenticate using a password  
+Note - focus on the first one:
+Your key-pair generated in the project Bash - Loops, conditions and parsing, should exist in your local machine/sandbox/vm etc. If the key-pair you generated in the previous projcet is named school, and the path is ~/.ssh/school, then you're good to go.
+If not you might have to rename it to school ie rename public key, rename private key.
 
- Done? Help
+mv current-name school
+mv current-name.pub school.pub
 
-### 3\. Let me in!
+move both public key and private key to ~/.ssh/ directory:
 
-mandatory
+mv school.pub school ~/.ssh/
 
-Now that you have successfully connected to your server, we would also like to join the party.
+Configure Local OpenSSH Client:
+You should have a file ~/.ssh/config :
 
-Add the SSH public key below to your server so that we can connect using the `ubuntu` user.
+$ ls -a ~/.ssh/
+If not create it:
 
-```
+vim ~/.ssh/config
+Add the content below to whatever is inside if exists:
+
+Host your-server-ip
+    IdentityFile ~/.ssh/school
+    PreferredAuthentications publickey
+    PasswordAuthentication no
+Review this line in the console session above: sylvain@ubuntu$ ssh -v ubuntu@98.98.98.98
+
+Connect to your server:
+If you asked for a server in step 1. You have an IP
+
+ssh -v ubuntu@your-server-ip
+If you get a permission denied error, set the file permission of the ~/.ssh/school file to read-only for yourself/user:
+
+chmod 400 ~/.ssh/school
+Connect now:
+
+ssh -v ubuntu@your-server-ip
+See shell session below for reference:
+
+root@HP:/alx-SE/alx-system_engineering-devops/0x0B-ssh# ssh -v ubuntu@54.196.27.23
+OpenSSH_8.2p1 Ubuntu-4ubuntu0.7, OpenSSL 1.1.1f  31 Mar 2020
+debug1: Reading configuration data /root/.ssh/config
+debug1: /root/.ssh/config line 1: Applying options for 54.196.27.23
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config line 19: include /etc/ssh/ssh_config.d/*.conf matched no files
+debug1: /etc/ssh/ssh_config line 21: Applying options for *
+debug1: Connecting to 54.196.27.23 [54.196.27.23] port 22.
+debug1: Connection established.
+debug1: identity file /root/.ssh/school type 0
+debug1: identity file /root/.ssh/school-cert type -1
+debug1: Local version string SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.7
+debug1: Remote protocol version 2.0, remote software version OpenSSH_8.2p1 Ubuntu-4ubuntu0.5
+debug1: match: OpenSSH_8.2p1 Ubuntu-4ubuntu0.5 pat OpenSSH* compat 0x04000000
+debug1: Authenticating to 54.196.27.23:22 as 'ubuntu'
+debug1: SSH2_MSG_KEXINIT sent
+debug1: SSH2_MSG_KEXINIT received
+debug1: kex: algorithm: curve25519-sha256
+debug1: kex: host key algorithm: ecdsa-sha2-nistp256
+debug1: kex: server->client cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
+debug1: kex: client->server cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
+debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
+debug1: Server host key: ecdsa-sha2-nistp256 SHA256:2uWy4t4mrsUDCTW1ohb6RbkiVwBoU0C/bM6fLcjsTy8
+debug1: Host '54.196.27.23' is known and matches the ECDSA host key.
+debug1: Found key in /root/.ssh/known_hosts:7
+debug1: rekey out after 134217728 blocks
+debug1: SSH2_MSG_NEWKEYS sent
+debug1: expecting SSH2_MSG_NEWKEYS
+debug1: SSH2_MSG_NEWKEYS received
+debug1: rekey in after 134217728 blocks
+debug1: Will attempt key: /root/.ssh/school RSA SHA256:GkR6pBszVUVA+c9UC7FyAVZMv0FaNn8RyRb5w/9+HgA explicit
+debug1: SSH2_MSG_EXT_INFO received
+debug1: kex_input_ext_info: server-sig-algs=<ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com>
+debug1: SSH2_MSG_SERVICE_ACCEPT received
+debug1: Authentications that can continue: publickey
+debug1: Next authentication method: publickey
+debug1: Offering public key: /root/.ssh/school RSA SHA256:GkR6pBszVUVA+c9UC7FyAVZMv0FaNn8RyRb5w/9+HgA explicit
+debug1: Server accepts key: /root/.ssh/school RSA SHA256:GkR6pBszVUVA+c9UC7FyAVZMv0FaNn8RyRb5w/9+HgA explicit
+debug1: Authentication succeeded (publickey).
+Authenticated to 54.196.27.23 ([54.196.27.23]:22).
+debug1: channel 0: new [client-session]
+debug1: Requesting no-more-sessions@openssh.com
+debug1: Entering interactive session.
+debug1: pledge: network
+debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
+debug1: Remote: /home/ubuntu/.ssh/authorized_keys:2: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding
+debug1: Remote: /home/ubuntu/.ssh/authorized_keys:2: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding
+debug1: Sending environment.
+debug1: Sending env LANG = C.UTF-8
+Welcome to Ubuntu 20.04.5 LTS (GNU/Linux 5.15.0-1021-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sun Jun 25 08:53:59 UTC 2023
+
+  System load:  0.08              Processes:             98
+  Usage of /:   7.9% of 19.20GB   Users logged in:       0
+  Memory usage: 22%               IPv4 address for eth0: 10.247.92.111
+  Swap usage:   0%
+
+0 updates can be applied immediately.
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@194126-web-01:~$ ls
+ubuntu@194126-web-01:~$ ls -a ~/.ssh/
+.  ..  authorized_keys
+ubuntu@194126-web-01:~$ cat ~/.ssh/authorized_keys
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCKAYwA7g+vnJ5XBV8lamCQo5jTaSJaJS6sMFYcaGhNWucItZjcKMdGj7lkleEFV2x00b9643oac0SeOXljTa3V4In7JlHV0Toot7SI7dZjE9Dgiq/+xRJmBZXs1MCf8QK5XS8rS+2i9JlXD52OZuX6iAqPo7ELASSf6PGyZotj+EdXSvq8bYfUoPW9HYDgfaxCpSgtnQ7tdTuZWjdCE+sBLpC+2Rl7s1LfNQWTQ5uPtXyxwUhrEWrwIClGMp5Wfl0N7DuX+3ZP6igaCDMtjgRCnqtvB27h0gQPHlV2zycf0bjGlHL7USSg/hNMm0EKdkPjcDEQAAkLRSF4OK+uQfU3 alx_applicant_server
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDS4g/rZhE9YRbJjgbZq46DZ7W2ZHD5auZn+Kv5tYaDsuSgL+7H4wYt3+9GHdOMOzXSTniDNs6A6sdAdH7vlpsXbDyZAuq+4EszLXafETcexx0HKocaKx3t77rFTmlqOfX6UFfT7rQxgyfZOG/mLWyxbZktSxG0htIBxeAW5X/nsj9n7YL/0MBsdZb6vKCZEJd6VU9mchWhcrklPvPvNH6TfvV/IJNAz0fnjP15U0mKENLmnSOnzrNq3vTYZ/SynDAjYz4ox1khT1AtpCbsZaJBY800JNvBVEEtWU0ymfEcSkKbPvdn5EU207KCEx+jwDDNsnD5zE2d6KH9UBIBHBeGhaZiuorbfbc5Uy/09Hhc3mUmq+jWCU3FIJJ7j44gqiWmp4AzfiC47w+ozks4Ze59+3UIl+7ULHZN5QteC6kupJL+nv6eL1WlimivvIQMKd3zIMireA4MU5IHe7Cf3lBUca4oIEx0iLE5qy65Sr46hUp62N7ulm2K6V8DfiTXevE= root@HP
+ubuntu@194126-web-01:~$ nano ~/.ssh/authorized_keys
+See below for contrast if the console text-above is jumbled up and some detail is not easily visible:
+
+sever-shell
+
+
+Step n: task 3
+While Still connected to your remote shell.(Review the last part of the console session above)
+Add the string(provided) to the authorized_keys file.
+
+nano ~/.ssh/authorized_keys
+The SSH public key given in your intranet task 3 looks like this:
+
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNdtrNGtTXe5Tp1EJQop8mOSAuRGLjJ6DW4PqX4wId/Kawz35ESampIqHSOTJmbQ8UlxdJuk0gAXKk3Ncle4safGYqM/VeDK3LN5iAJxf4kcaxNtS3eVxWBE5iF3FbIjOqwxw5Lf5sRa5yXxA8HfWidhbIG5TqKL922hPgsCGABIrXRlfZYeC0FEuPWdr6smOElSVvIXthRWp9cr685KdCI+COxlj1RdVsvIo+zunmLACF9PYdjB2s96Fn0ocD3c5SGLvDOFCyvDojSAOyE70ebIElnskKsDTGwfT4P6jh9OBzTyQEIS2jOaE5RQq4IB4DsMhvbjDSQrP0MdCLgwkN
+This is the end of the guide.
 
-```
-
-**Repo:**
-
--   GitHub repository: `alx-system_engineering-devops`
--   Directory: `0x0B-ssh`
-
- Done? Help Get a sandbox
-
-### 4\. Client configuration file (w/ Puppet)
-
-#advanced
-
-Let's practice using Puppet to make changes to our configuration file. Just as in the previous configuration file task, we'd like you to set up your client SSH configuration file so that you can connect to a server without typing a password.
-
-Requirements:
-
--   Your SSH client configuration must be configured to use the private key `~/.ssh/school`
--   Your SSH client configuration must be configured to refuse to authenticate using a password
-
-Example:
-
-```
-vagrant@ubuntu:~$ sudo puppet apply 100-puppet_ssh_config.pp
-Notice: Compiled catalog for ubuntu-xenial in environment production in 0.11 seconds
-Notice: /Stage[main]/Main/File_line[Turn off passwd auth]/ensure: created
-Notice: /Stage[main]/Main/File_line[Declare identity file]/ensure: created
-Notice: Finished catalog run in 0.03 seconds
-vagrant@ubuntu:~$
-
-```
-
-**Repo:**
-
--   GitHub repository: `alx-system_engineering-devops`
--   Directory: `0x0B-ssh`
--   File: `100-puppet_ssh_config.pp`
+For task 4; follow the instructions and based on task requirements and your Puppet knowledge.

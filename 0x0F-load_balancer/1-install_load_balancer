@@ -6,7 +6,7 @@ sudo add-apt-repository -y ppa:vbernat/haproxy-2.5
 sudo apt-get -y install haproxy
 
 # the load balancer's configuration
-DOMAIN_NAME='webdagi.tech'
+DOMAIN_NAME='Holb20233lcidz.tech'
 INIT_FILE='/etc/default/haproxy'
 CONFIG_FILE='/etc/haproxy/haproxy.cfg'
 HAPROXY_LB_CONFIG=\

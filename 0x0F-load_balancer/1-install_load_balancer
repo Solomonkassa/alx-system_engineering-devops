@@ -1,46 +1,54 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Installs, configures, and starts the load balancer
+sudo apt-get update
+sudo apt-get -y install --no-install-recommends software-properties-common
+sudo add-apt-repository -y ppa:vbernat/haproxy-2.5
+sudo apt-get -y install haproxy
 
-# Update package lists
-sudo apt update
+# the load balancer's configuration
+DOMAIN_NAME='webdagi.tech'
+INIT_FILE='/etc/default/haproxy'
+CONFIG_FILE='/etc/haproxy/haproxy.cfg'
+HAPROXY_LB_CONFIG=\
+"
+#--$DOMAIN_NAME-params-begin--
+backend $DOMAIN_NAME-backend
+	balance roundrobin
+	server 203672-web-01 54.237.117.138:80 check
+	server 203672-web-02 100.26.216.97:80 check
+frontend $DOMAIN_NAME-frontend
+	bind *:80
+	mode http
+	default_backend $DOMAIN_NAME-backend
+#--$DOMAIN_NAME-params-end--
+"
 
-# Install HAProxy
-sudo apt install -y haproxy
+[ -f "$INIT_FILE" ] || touch "$INIT_FILE"
+[ -f "$CONFIG_FILE" ] || touch "$CONFIG_FILE"
 
-# Configure HAProxy
-haproxy_config="/etc/haproxy/haproxy.cfg"
-sudo cp "$haproxy_config" "$haproxy_config.bak"
+CONFIG_WORDS=$(grep -Eco "$DOMAIN_NAME-backend" < $CONFIG_FILE)
 
-# Replace the default configuration with the desired configuration
-cat <<EOF | sudo tee "$haproxy_config" > /dev/null
-global
-    daemon
-    maxconn 256
+if [ "$(grep -Eco '^ENABLED=[01]$' < $INIT_FILE)" -gt 0 ]; then
+	sed -i 's/^ENABLED=0$/ENABLED=1/' "$INIT_FILE"
+else
+	echo 'ENABLED=1' >> $INIT_FILE
+fi
 
-defaults
-    mode http
-    timeout connect 5000ms
-    timeout client 50000ms
-    timeout server 50000ms
+if [ "$CONFIG_WORDS" -eq 0 ]; then
+	echo -e "$HAPROXY_LB_CONFIG" >> $CONFIG_FILE
+else
+	start_tkn="#--$DOMAIN_NAME-params-begin--"
+	end_tkn="#--$DOMAIN_NAME-params-end--"
+	a=$(grep -onE "$start_tkn" < "$CONFIG_FILE" | cut -d : -f1)
+	b=$(grep -onE "$end_tkn" < "$CONFIG_FILE" | cut -d : -f1)
+	a=$((a - 1))
+	b=$((b + 1))
+	sed -i "$a,$b"d "$CONFIG_FILE"
+	echo -en "$HAPROXY_LB_CONFIG" >> $CONFIG_FILE
+fi
 
-frontend http-in
-    bind *:80
-    default_backend webservers
-
-backend webservers
-    balance roundrobin
-    server web-01 203672-web-01:80 check
-    server web-02 203672-web-02:80 check
-EOF
-
-# Update the /etc/hosts file with the hostnames and IP addresses
-echo "54.237.117.138 203672-web-01" | sudo tee -a /etc/hosts > /dev/null
-echo "100.26.216.97 203672-web-02" | sudo tee -a /etc/hosts > /dev/null
-
-# Enable HAProxy to be managed via an init script
-sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
-
-# Restart HAProxy service
-sudo service haproxy restart
-
-exit 0
-
+if [ "$(pgrep -c haproxy)" -le 0 ]; then
+	service haproxy start
+else
+	service haproxy restart
+fi

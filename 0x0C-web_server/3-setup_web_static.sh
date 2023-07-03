@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# Create the necessary directories if they don't exist
+mkdir -p /data/
+mkdir -p /data/web_static/
+mkdir -p /data/web_static/releases/
+mkdir -p /data/web_static/shared/
+mkdir -p /data/web_static/releases/test/
+
+# Create a fake HTML file for testing
+echo "Hello, world!" > /data/web_static/releases/test/index.html
+
+# Create a symbolic link
+ln -sf /data/web_static/releases/test/ /data/web_static/current
+
+# Set ownership and permissions
+chown -R ubuntu:ubuntu /data/
+chmod -R 755 /data/
+
+# Update the Nginx configuration
+config_file="/etc/nginx/sites-available/default"
+
+# Remove any existing configuration related to serving the static content
+sed -i '/location \/hbnb_static/ d' "$config_file"
+
+# Add the new configuration for serving the static content
+echo "
+location /hbnb_static {
+    alias /data/web_static/current/;
+    index index.html;
+}" >> "$config_file"
+
+# Restart Nginx
+service nginx restart
+

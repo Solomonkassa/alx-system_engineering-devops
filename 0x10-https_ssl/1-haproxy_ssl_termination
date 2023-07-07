@@ -30,7 +30,7 @@ frontend www-http
     default_backend www-backend
 
 frontend www-https
-    bind   *:443 ssl crt /etc/letsencrypt/live/http:/www.holb20233lcidz.tech/both.pem
+    bind   *:443 ssl crt /etc/letsencrypt/live/http:/www.holb20233lcidz.tech/cert.pem
     http-request set-header X-Forwarded-Proto https
     default_backend www-backend
 

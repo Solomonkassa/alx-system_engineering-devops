@@ -21,4 +21,4 @@ What you should learn from this project:
 ---
 
 ## Author
-* **David Kwan** - [dwkwan](https://github.com/dwkwan)
+* **Solomon Kassa** - [dwkwan](https://github.com/solomonkassa)

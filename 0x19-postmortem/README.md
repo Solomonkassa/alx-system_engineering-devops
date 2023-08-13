@@ -66,5 +66,5 @@ To address the incident, the following steps were taken:
 
 The incident (ID: 0x19) served as a valuable learning experience for our team. By thoroughly analyzing the root cause, executing prompt mitigation actions, and implementing preventive measures, we have significantly reduced the risk of encountering similar incidents. Our commitment to continuous improvement and proactive measures ensures the stability, reliability, and security of our systems in the future.
 
-For inquiries or additional information about this incident report, please contact Solomon Mulu at [Your Contact Information].
+For inquiries or additional information about this incident report, please contact [Solomon Kassa] at (solomonmulu@gmail.com).
 
